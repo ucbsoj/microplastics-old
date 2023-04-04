@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+      
+      section{
+        background-size: cover;
+        background-position: center;
+      }
+      #prev-button,#next-button{
+        cursor: pointer;
+      }
+      
+      /* CSS code for the Progress bar across the top */
+      .progress {
+        width: 0%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        animation: progress 1s linear;
+        animation-play-state: paused;
+        animation-delay: calc(var(--scroll) * -1s); /* use --scroll property created by JS */
+        animation-iteration-count: 1;
+        animation-fill-mode: both;
+      }
+      @keyframes progress {
+        to {
+          width: 100%;
+        }
+      }
+    </style>
+    <title>Microplastics</title>
+  </head>
+  <body class="position-relative">
+    
+    <!-- progress bar across top of screen. Change color and size here. -->
+    <div class="progress z-3" style="background-color:#000;height:3px;"></div>
+    
+    
+    <!-- Nav Button, only appears after launching project -->
+    <div id="nav-buttons">
+      <!-- previous button. Some different styles here: https://icons.getbootstrap.com/ -->
+      <div id="prev-button" class="position-fixed bottom-0 mb-5 start-0 ms-2 z-2 d-none" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+        </svg>
+      </div>
+
+      <!-- next button. Some different styles here: https://icons.getbootstrap.com/ -->
+      <div id="next-button" class="position-fixed bottom-0 mb-5 end-0 me-2 z-2 d-none" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
+        </svg>
+      </div>
+    </div>
+    
+    
+    
+    <!-- Main header. Make sure launch button has #launch-button id. -->
+    <header class="container-fluid text-center vh-100 d-flex flex-column justify-content-center">
+      <div class="row">
+        <div class="col-12">
+          <div id="intro">
+            <h1>Microplastics</h1>
+            <button id="launch-button" class="btn btn-outline-dark mt-5">Launch Project</button>
+          </div>
+        </div>
+      </div>
+    </header>
+    
+    
+    <!--
+
+    Adjust text position using two classes.
+
+    Horizontal adjustment of the text
+    text-center (centers the text)
+    text-start  (text on the left)
+    text-end    (text on the right)
+
+    Vertical adjustment of the text
+    justify-content-center (center the vertical)
+    justify-content-start  (text at the top)
+    justify-content-end    (text at the bottom)
+
+    adjust spacing (add dash number 1-5)
+    mt (margin top)
+    me (margin end)
+    ms (margin start)
+    mb (margin bottom)
+    
+    
+    <!-- Example of text in middle -->
+    <section data-image="images/placeholder.jpg" class="container-fluid text-center vh-100 d-flex flex-column justify-content-center d-none">
+      <div class="row">
+        <div class="col-12">
+            <h2 class="fs-1">Text in center</h2>
+        </div>
+      </div>
+    </section>
+    
+    
+    <!-- Example of text on left -->
+    <section data-image="images/placeholder.jpg" class="container-fluid text-start vh-100 d-flex flex-column justify-content-center d-none">
+      <div class="row">
+        <div class="col-12">
+            <h2 class="fs-1 ">Text on left</h2>
+        </div>
+      </div>
+    </section>
+    
+    
+    
+    <!-- Example of text on right -->
+    <section data-image="images/placeholder.jpg" class="container-fluid text-end vh-100 d-flex flex-column justify-content-center d-none">
+      <div class="row">
+        <div class="col-12">
+            <h2 class="fs-1">Text on right</h2>
+        </div>
+      </div>
+    </section>
+    
+    
+    <!-- Example of text on upper right -->
+    <section data-image="images/placeholder.jpg" class="container-fluid text-end vh-100 d-flex flex-column justify-content-start d-none">
+      <div class="row">
+        <div class="col-12">
+            <h2 class="fs-1">Text on Upper right of image.</h2>
+        </div>
+      </div>
+    </section>
+    
+    
+    
+    
+    <script src="js/jquery-3.6.1.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jquery.csv.min.js"></script>
+    <script>
+      
+      
+      jQuery(document).ready(function($){
+        
+        
+        var currentSlide   = 0;
+        var numberOfSlides = $("section").length;
+        
+        
+        
+        
+        //set the background image of each section to the data-image attribute at the start
+        $("section").each(function(i,e){
+          $(this).css({
+            "background-image"    : "url(" + $(this).data("image") + ")",
+            "background-size"     : "cover",
+            "background-position" : "center center",
+            "background-repeat"   : "no-repeat"
+          });
+          $(this).addClass("d-none");
+        });
+        
+        
+        
+        
+        
+        //When the click the launch button
+        $("#launch-button").on("click", function(){
+          //hide the header
+          $("header").addClass("d-none");
+          
+          //show first slide
+          $("section").eq(0).removeClass("d-none");
+          
+          //show navigation buttons
+          $("#next-button, #prev-button").removeClass("d-none");
+          
+        });
+        
+        
+        
+        
+        
+        //when clicking on next button
+        $("#next-button").on("click", function(){
+          
+          if(currentSlide < (numberOfSlides - 1)){
+            
+            //hide current slide
+            $("section").eq(currentSlide).addClass("d-none");
+            
+            //increment the current slide variable by one
+            currentSlide += 1;
+            
+            //show next slide
+            $("section").eq(currentSlide).removeClass("d-none");
+            
+            //move progress bar up
+            document.body.style.setProperty('--scroll', currentSlide / (numberOfSlides-1));
+          }
+          
+          if(currentSlide == (numberOfSlides - 1)){
+            $("#next-button").addClass("d-none");
+          }
+          
+        });
+        
+        
+        
+        $("#prev-button").on("click", function(){
+          
+          
+          if(currentSlide > 0){
+            //hide current slide
+            $("section").eq(currentSlide).addClass("d-none");
+          
+            //decrement current slide variable by one
+            currentSlide -= 1;
+            
+            //show prev slide
+            $("section").eq(currentSlide).removeClass("d-none");
+            
+            //move progress bar down
+            document.body.style.setProperty('--scroll', currentSlide / (numberOfSlides-1));
+            
+            //show next button if we were on last slide
+            $("#next-button").removeClass("d-none");
+          }
+          
+          if(currentSlide == 0){
+            $("#next-button, #prev-button").addClass("d-none");
+            
+            //show launch page again
+            $("section").eq(currentSlide).addClass("d-none");
+            $("header").removeClass("d-none");
+          }
+          
+        })
+        
+        
+        
+        
+        
+      });
+      
+      
+    
+    </script>
+  </body>
+</html>
